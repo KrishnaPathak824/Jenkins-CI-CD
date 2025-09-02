@@ -72,3 +72,16 @@ docker exec jenkins-blueocean cat /var/jenkins_home/secrets/initialAdminPassword
 http://localhost:8080
 ```
 
+### Jenkins Docker Plugin Configuration when running jenkins as container
+
+1. First Install Docker Plugin.
+
+2. Go to Manage Jenkins -> System Configuration -> Scroll down to botton -> Add Cloud -> Docker.
+
+3. If you are running jenkins as container, in the docker host uri field you have to enter unix or tcp address of the docker host. But since you are running jenkins as container, the container can't reach docker host unix port.
+
+4. So, we have to run another container that can mediate between docker host and jenkins container. It will public docker host's unix port as its tcp port. Follow the instructions to create socat container https://hub.docker.com/r/alpine/socat/
+
+5. After creating the socat container, you can go back the docker configuration in jenkins and enter tcp://socat-container-ip:2375
+
+Test Connection should succeed now.
